@@ -1,23 +1,21 @@
 import argparse
-from dotenv import load_dotenv
-load_dotenv()
+from ingest import ingest
+from query import query
 
-def ingest(source_dir):
-    print(f"[INGEST] Would load public travel PDFs from {source_dir}")
-    print("TODO: Parse PDFs, chunk, embed, store in Chroma")
-
-def query(question):
-    print(f"[QUERY] {question}")
-    print("TODO: Retrieve top-k chunks, call LLM, return answer with sources")
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--ingest", help="Path to public docs")
-    parser.add_argument("--query", help="Question to ask")
+def main():
+    parser = argparse.ArgumentParser(description="RAG Malaysia Travel Guide with Ollama")
+    parser.add_argument("--ingest", action="store_true", help="Ingest PDFs from data/docs")
+    parser.add_argument("--query", type=str, help="Ask a question")
     args = parser.parse_args()
+
     if args.ingest:
-        ingest(args.ingest)
+        print("[INGEST] Building vector store...")
+        ingest()
     elif args.query:
+        print(f"[QUERY] {args.query}")
         query(args.query)
     else:
-        print("Use --ingest data/ or --query 'Best time to visit Langkawi?'")
+        parser.print_help()
+
+if __name__ == "__main__":
+    main()
