@@ -21,3 +21,8 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+
+.venv/
+.env
+__pycache__/
+data/chroma/
